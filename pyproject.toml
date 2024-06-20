@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "cmake", "pybind11"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyrobotstxt"
+version = "0.0.1"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "isort",
+    "black",
+    "setuptools",
+    "cmake",
+    "pybind11"
+]

@@ -1,0 +1,3 @@
+[submodule "robotstxt"]
+	path = robotstxt
+	url = https://github.com/google/robotstxt.git
