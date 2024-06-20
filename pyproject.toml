@@ -14,5 +14,7 @@ dev = [
     "black",
     "setuptools",
     "cmake",
-    "pybind11"
+    "pybind11",
+    "sphinx",
+    "furo~=2024.5.6"
 ]

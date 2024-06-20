@@ -17,3 +17,6 @@ clean:
 
 uninstall:
 	$(python) -m pip uninstall -y $(project)
+
+doc:
+	cd ./docs && make html

@@ -182,7 +182,7 @@ Indicates that the key-value pair is missing the colon separator.
     .def("ReportLineMetadata",
          &gb::RobotsParseHandler::ReportLineMetadata,
          R"(
-HandleSitemap(self: pyrobotstxt.googlebot.RobotsParseHandler, line_num: int, metadata: pyrobotstxt.googlebot.RobotsParseHandler.LineMetadata, /) -> None
+ReportLineMetadata(self: pyrobotstxt.googlebot.RobotsParseHandler, line_num: int, metadata: pyrobotstxt.googlebot.RobotsParseHandler.LineMetadata, /) -> None
          )");
 
   m.def("ParseRobotsTxt",
@@ -285,7 +285,7 @@ referred explicitly to one of the specified user agents.
     .def("matching_line",
          &gb::RobotsMatcher::matching_line,
          R"(
-ever_seen_specific_agent(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> int
+matching_line(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> int
 
 Returns the line that matched or 0 if none matched.
          )");
