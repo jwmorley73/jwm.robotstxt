@@ -9,12 +9,16 @@ requires-python = ">=3.10"
 dependencies = []
 
 [project.optional-dependencies]
+doc = [
+    "sphinx",
+    "furo~=2024.5.6"
+]
+
 dev = [
+    "pyrobotstxt[doc]",
     "isort",
     "black",
     "setuptools",
     "cmake",
-    "pybind11",
-    "sphinx",
-    "furo~=2024.5.6"
+    "pybind11"
 ]
