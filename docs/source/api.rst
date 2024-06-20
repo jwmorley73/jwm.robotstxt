@@ -1,5 +1,3 @@
-:github_url: https://github.com/jwmorley73/pyrobotstxt
-
 API
 ===
 
