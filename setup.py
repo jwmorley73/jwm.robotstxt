@@ -16,13 +16,12 @@ def build_robotstxt(
     subprocess.check_call(("cmake", "-S", str(src), "-B", str(out)))
     subprocess.check_call(("cmake", "--build", str(out)))
 
+
 def main() -> None:
     # Build robotstxt
     robotstxt_src = pathlib.Path.cwd() / "robotstxt"
     if not robotstxt_src.exists():
-        raise Exception(
-            f"Could not find robotstxt source in {str(robotstxt_src)}"
-        )
+        raise Exception(f"Could not find robotstxt source in {str(robotstxt_src)}")
     robotstxt_build = pathlib.Path.cwd() / "c-build"
     build_robotstxt(robotstxt_src, robotstxt_build)
 
@@ -47,22 +46,23 @@ def main() -> None:
                     "robots",
                     "absl_strings",
                     "absl_string_view",
-                    "absl_throw_delegate"
+                    "absl_throw_delegate",
                 ],
                 library_dirs=[
                     str(robotstxt_build),
                     str(robotstxt_build / "libs/abseil-cpp-build/absl/strings"),
-                    str(robotstxt_build / "libs/abseil-cpp-build/absl/base")
+                    str(robotstxt_build / "libs/abseil-cpp-build/absl/base"),
                 ],
                 # Match the robotstxt c++ version.
                 #
                 # There is a breaking change 14->17 for the dependant absl
                 # library. Symbol table miss match with absl::string_view
                 # becoming std::string_view.
-                cxx_std=14
+                cxx_std=14,
             ),
         ],
         cmdclass={"build_ext": pybind11.setup_helpers.build_ext},
     )
+
 
 main()

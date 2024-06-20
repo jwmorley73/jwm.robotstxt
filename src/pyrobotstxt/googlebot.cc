@@ -69,8 +69,6 @@ PYBIND11_MODULE(googlebot, m) {
   options.disable_function_signatures();
 
   m.doc() = R"(
-Wrapped googlebot bindings for handling robots.txt files.
-
 This file implements the standard defined by the Robots Exclusion Protocol
 (REP) internet draft (I-D).
   https://www.rfc-editor.org/rfc/rfc9309.html
@@ -97,17 +95,17 @@ ParseRobotsTxt() in the sequence they have been found in the file.
 
   robotsParseHandler.def(py::init<>(),
                          R"(
-__init__(self: pyrobotstxt.googlebot.RobotsParseHandler) -> None
+__init__(self: pyrobotstxt.googlebot.RobotsParseHandler, /) -> None
                          )")
     .def("HandleRobotsStart",
          &gb::RobotsParseHandler::HandleRobotsStart,
          R"(
-HandleRobotsStart(self: pyrobotstxt.googlebot.RobotsParseHandler) -> None
+HandleRobotsStart(self: pyrobotstxt.googlebot.RobotsParseHandler, /) -> None
          )")
     .def("HandleRobotsEnd",
          &gb::RobotsParseHandler::HandleRobotsEnd,
          R"(
-HandleRobotsEnd(self: pyrobotstxt.googlebot.RobotsParseHandler) -> None
+HandleRobotsEnd(self: pyrobotstxt.googlebot.RobotsParseHandler, /) -> None
          )")
     .def("HandleUserAgent",
          &gb::RobotsParseHandler::HandleUserAgent,
@@ -190,7 +188,7 @@ HandleSitemap(self: pyrobotstxt.googlebot.RobotsParseHandler, line_num: int, met
   m.def("ParseRobotsTxt",
         &gb::ParseRobotsTxt,
         R"(
-ParseRobotsTxt(robots_body: str, parse_callback: pyrobotstxt.googlebot.RobotsParseHandler) -> None
+ParseRobotsTxt(robots_body: str, parse_callback: pyrobotstxt.googlebot.RobotsParseHandler, /) -> None
 
 Parses body of a robots.txt and emits parse callbacks. This will accept
 typical typos found in robots.txt, such as 'disalow'.
@@ -219,7 +217,7 @@ The RobotsMatcher can be re-used for URLs/robots.txt but is not thread-safe.
   robotsMatcher.def(
       py::init<>(),
       R"(
-__init__(self: pyrobotstxt.googlebot.RobotsMatcher) -> None
+__init__(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> None
 
 Create a RobotsMatcher with the default matching strategy. The default
 matching strategy is longest-match as opposed to the former internet draft
@@ -237,7 +235,7 @@ standard, crawlers should be allowed to crawl everything with such a rule.
     .def_static("IsValidUserAgentToObey",
                 &gb::RobotsMatcher::IsValidUserAgentToObey,
                 R"(
-IsValidUserAgentToObey(user_agent: str) -> bool
+IsValidUserAgentToObey(user_agent: str, /) -> bool
 
 Verifies that the given user agent is valid to be matched against
 robots.txt. Valid user agent strings only contain the characters
@@ -246,15 +244,16 @@ robots.txt. Valid user agent strings only contain the characters
     .def("AllowedByRobots",
          &gb::RobotsMatcher::AllowedByRobots,
          R"(
-AllowedByRobots(self: pyrobotstxt.googlebot.RobotsMatcher, robots_body: str, user_agents: typing.Sequence[str], url: str) -> bool
+AllowedByRobots(self: pyrobotstxt.googlebot.RobotsMatcher, robots_body: str, user_agents: typing.Sequence[str], url: str, /) -> bool
 
-Returns true iff 'url' is allowed to be fetched by any member of the
-"user_agents" vector. 'url' must be %-encoded according to RFC3986.
+Returns true iff 'url' is allowed to be fetched by any member of
+the "user_agents" vector. 'url' must be %-encoded according to
+RFC3986.
          )")
     .def("OneAgentAllowedByRobots",
          &gb::RobotsMatcher::OneAgentAllowedByRobots,
          R"(
-OneAgentAllowedByRobots(self: pyrobotstxt.googlebot.RobotsMatcher, robots_txt: str, user_agent: str, url: str) -> bool
+OneAgentAllowedByRobots(self: pyrobotstxt.googlebot.RobotsMatcher, robots_txt: str, user_agent: str, url: str, /) -> bool
 
 Do robots check for 'url' when there is only one user agent. 'url' must
 be %-encoded according to RFC3986.
@@ -262,14 +261,14 @@ be %-encoded according to RFC3986.
     .def("disallow",
          &gb::RobotsMatcher::disallow,
          R"(
-disallow(self: pyrobotstxt.googlebot.RobotsMatcher) -> bool
+disallow(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> bool
 
 Returns true if we are disallowed from crawling a matching URI.
          )")
     .def("disallow_ignore_global",
          &gb::RobotsMatcher::disallow_ignore_global,
          R"(
-disallow_ignore_global(self: pyrobotstxt.googlebot.RobotsMatcher) -> bool
+disallow_ignore_global(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> bool
 
 Returns true if we are disallowed from crawling a matching URI. Ignores any
 rules specified for the default user agent, and bases its results only on
@@ -278,7 +277,7 @@ the specified user agents.
     .def("ever_seen_specific_agent",
          &gb::RobotsMatcher::ever_seen_specific_agent,
          R"(
-ever_seen_specific_agent(self: pyrobotstxt.googlebot.RobotsMatcher) -> bool
+ever_seen_specific_agent(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> bool
 
 Returns true iff, when AllowedByRobots() was called, the robots file
 referred explicitly to one of the specified user agents.
@@ -286,7 +285,7 @@ referred explicitly to one of the specified user agents.
     .def("matching_line",
          &gb::RobotsMatcher::matching_line,
          R"(
-ever_seen_specific_agent(self: pyrobotstxt.googlebot.RobotsMatcher) -> int
+ever_seen_specific_agent(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> int
 
 Returns the line that matched or 0 if none matched.
          )");

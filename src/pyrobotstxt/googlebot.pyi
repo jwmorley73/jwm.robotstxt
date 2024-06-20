@@ -1,9 +1,7 @@
 """
-Wrapped googlebot bindings for handling robots.txt files.
-
 This file implements the standard defined by the Robots Exclusion Protocol
 (REP) internet draft (I-D).
-    https://www.rfc-editor.org/rfc/rfc9309.html
+  https://www.rfc-editor.org/rfc/rfc9309.html
 
 Google doesn't follow the standard strictly, because there are a lot of
 non-conforming robots.txt files out there, and we err on the side of
@@ -11,11 +9,12 @@ disallowing when this seems intended.
 
 An more user-friendly description of how Google handles robots.txt can be
 found at:
-    https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt
+  https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt
 
 This library provides a low-level parser for robots.txt (ParseRobotsTxt()),
 and a matcher for URLs against a robots.txt (class RobotsMatcher).
 """
+
 import abc
 import dataclasses
 import typing
@@ -27,33 +26,22 @@ class RobotsParseHandler(abc.ABC):
     """
 
     @abc.abstractmethod
-    def HandleRobotsStart(self) -> None: ...
-
+    def HandleRobotsStart(self, /) -> None: ...
     @abc.abstractmethod
-    def HandleRobotsEnd(self) -> None: ...
-
+    def HandleRobotsEnd(self, /) -> None: ...
     @abc.abstractmethod
-    def HandleUserAgent(self, line_num: int, value: str) -> None: ...
-
+    def HandleUserAgent(self, line_num: int, value: str, /) -> None: ...
     @abc.abstractmethod
-    def HandleAllow(self, line_num: int, value: str) -> None: ...
-
+    def HandleAllow(self, line_num: int, value: str, /) -> None: ...
     @abc.abstractmethod
-    def HandleDisallow(self, line_num: int, value: str) -> None: ...
-
+    def HandleDisallow(self, line_num: int, value: str, /) -> None: ...
     @abc.abstractmethod
-    def HandleSitemap(self, line_num: int, value: str) -> None: ...
-
+    def HandleSitemap(self, line_num: int, value: str, /) -> None: ...
     @abc.abstractmethod
-    def HandleUnknownAction(self, line_num: int, action: str, value: str) -> None:
+    def HandleUnknownAction(self, line_num: int, action: str, value: str, /) -> None:
         """
         Any other unrecognized name/value pairs.
         """
-
-    @abc.abstractmethod
-    def ReportLineMetadata(
-        self, line_num: str, metadata: RobotsParseHandler.LineMetadata
-    ) -> None: ...
 
     @dataclasses.dataclass
     class LineMetadata:
@@ -75,21 +63,20 @@ class RobotsParseHandler(abc.ABC):
 
         has_directive: bool = False
         """
-        Indicates that the line has a valid robots.txt directive and one of
-        the `Handle*` methods will be called.
+        Indicates that the line has a valid robots.txt directive and one of the
+        `Handle*` methods will be called.
         """
 
         is_acceptable_typo: bool = False
         """
-        Indicates that the found directive is one of the acceptable typo
-        variants of the directive. See the key functions in ParsedRobotsKey for
-        accepted typos.
+        Indicates that the found directive is one of the acceptable typo variants
+        of the directive. See the key functions in ParsedRobotsKey for accepted
+        typos.
         """
 
         is_line_too_long: bool = False
         """
-        Indicates that the line is too long, specifically over
-        2083 * 8 bytes.
+        Indicates that the line is too long, specifically over 2083 * 8 bytes.
         """
 
         is_missing_colon_separator: bool = False
@@ -97,8 +84,12 @@ class RobotsParseHandler(abc.ABC):
         Indicates that the key-value pair is missing the colon separator.
         """
 
+    @abc.abstractmethod
+    def ReportLineMetadata(
+        self, line_num: str, metadata: RobotsParseHandler.LineMetadata, /
+    ) -> None: ...
 
-def ParseRobotsTxt(robots_body: str, parse_callback: RobotsParseHandler) -> None:
+def ParseRobotsTxt(robots_body: str, parse_callback: RobotsParseHandler, /) -> None:
     """
     Parses body of a robots.txt and emits parse callbacks. This will accept
     typical typos found in robots.txt, such as 'disalow'.
@@ -121,7 +112,7 @@ class RobotsMatcher(RobotsParseHandler):
     The RobotsMatcher can be re-used for URLs/robots.txt but is not thread-safe.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, /) -> None:
         """
         Create a RobotsMatcher with the default matching strategy. The default
         matching strategy is longest-match as opposed to the former internet draft
@@ -130,15 +121,15 @@ class RobotsMatcher(RobotsParseHandler):
         directives. For example, in case of conflicting matches (both Allow and
         Disallow), the longest match is the one the user wants. For example, in
         case of a robots.txt file that has the following rules
-        Allow: /
-        Disallow: /cgi-bin
+          Allow: /
+          Disallow: /cgi-bin
         it's pretty obvious what the webmaster wants: they want to allow crawl of
         every URI except /cgi-bin. However, according to the expired internet
         standard, crawlers should be allowed to crawl everything with such a rule.
         """
 
     @staticmethod
-    def IsValidUserAgentToObey(user_agent: str) -> bool:
+    def IsValidUserAgentToObey(user_agent: str, /) -> bool:
         """
         Verifies that the given user agent is valid to be matched against
         robots.txt. Valid user agent strings only contain the characters
@@ -146,41 +137,41 @@ class RobotsMatcher(RobotsParseHandler):
         """
 
     def AllowedByRobots(
-        self, robots_body: str, user_agents: typing.Sequence[str], url: str
+        self, robots_body: str, user_agents: typing.Sequence[str], url: str, /
     ) -> bool:
         """
         Returns true iff 'url' is allowed to be fetched by any member of
-        the 'user_agents' vector. 'url' must be %-encoded according to
+        the "user_agents" vector. 'url' must be %-encoded according to
         RFC3986.
         """
 
     def OneAgentAllowedByRobots(
-        self, robots_txt: str, user_agent: str, url: str
+        self, robots_txt: str, user_agent: str, url: str, /
     ) -> bool:
         """
-        Do robots check for 'url' when there is only one user agent. 'url'
-        must be %-encoded according to RFC3986.
+        Do robots check for 'url' when there is only one user agent. 'url' must
+        be %-encoded according to RFC3986.
         """
 
-    def disallow(self) -> bool:
+    def disallow(self, /) -> bool:
         """
         Returns true if we are disallowed from crawling a matching URI.
         """
 
-    def disallow_ignore_global(self) -> bool:
+    def disallow_ignore_global(self, /) -> bool:
         """
-        Returns true if we are disallowed from crawling a matching URI.
-        Ignores any rules specified for the default user agent, and bases
-        its results only on the specified user agents.
+        Returns true if we are disallowed from crawling a matching URI. Ignores any
+        rules specified for the default user agent, and bases its results only on
+        the specified user agents.
         """
 
-    def ever_seen_specific_agent(self) -> bool:
+    def ever_seen_specific_agent(self, /) -> bool:
         """
         Returns true iff, when AllowedByRobots() was called, the robots file
         referred explicitly to one of the specified user agents.
         """
 
-    def matching_line(self) -> int:
+    def matching_line(self, /) -> int:
         """
         Returns the line that matched or 0 if none matched.
         """
