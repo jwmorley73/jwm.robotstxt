@@ -20,3 +20,6 @@ uninstall:
 
 doc:
 	cd ./docs && make html
+
+test:
+	$(python) -m pytest

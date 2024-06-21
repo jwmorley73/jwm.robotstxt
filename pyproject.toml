@@ -11,14 +11,24 @@ dependencies = []
 [project.optional-dependencies]
 doc = [
     "sphinx",
-    "furo~=2024.5.6"
+    "furo"
+]
+
+test = [
+    "pytest"
 ]
 
 dev = [
-    "pyrobotstxt[doc]",
+    "pyrobotstxt[doc, test]",
     "isort",
     "black",
     "setuptools",
     "cmake",
     "pybind11"
 ]
+
+[tool.pytest.ini_options]
+minversion = 6.0
+console_output_style = "count"
+addopts = ["--import-mode=importlib"]
+testpaths = ["tests"]
