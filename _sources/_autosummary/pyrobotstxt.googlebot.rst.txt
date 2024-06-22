@@ -1,0 +1,39 @@
+pyrobotstxt.googlebot
+=====================
+
+.. automodule:: pyrobotstxt.googlebot
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      ParseRobotsTxt
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: api-class.rst
+   
+      RobotsMatcher
+      RobotsParseHandler
+   
+   
+
+   
+   
+   
+
+
+

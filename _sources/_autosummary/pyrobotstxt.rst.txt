@@ -1,0 +1,32 @@
+﻿pyrobotstxt
+===========
+
+.. automodule:: pyrobotstxt
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: api-module.rst
+   :recursive:
+
+   pyrobotstxt.googlebot
+

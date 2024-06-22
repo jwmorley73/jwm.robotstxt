@@ -1,0 +1,18 @@
+pyrobotstxt.googlebot.RobotsMatcher
+===================================
+
+.. currentmodule:: pyrobotstxt.googlebot
+
+.. autoclass:: RobotsMatcher
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+
+   
+   
+   
