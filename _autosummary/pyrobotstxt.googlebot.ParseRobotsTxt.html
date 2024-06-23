@@ -274,6 +274,9 @@
 typical typos found in robots.txt, such as ‘disalow’.</p>
 <p>Note, this function will accept all kind of input but will skip
 everything that does not look like a robots directive.</p>
+<p>Wrapper Note (pyrobotstxt): Does not work with RobotsMatcher due to how it
+manages user agents and urls internally (requires initialising with
+protected method InitUserAgentsAndPath).</p>
 </dd></dl>
 
 </section>
