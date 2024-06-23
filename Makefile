@@ -1,4 +1,4 @@
-.PHONY: build install clean uninstall
+.PHONY: build install clean uninstall doc test lint
 
 venv=./.venv
 python=$(venv)/bin/python
@@ -23,3 +23,6 @@ doc:
 
 test:
 	$(python) -m pytest
+
+lint:
+	$(python) -m isort --profile=black ./setup.py ./src ./tests && $(python) -m black ./setup.py ./src ./tests

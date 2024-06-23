@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 #include "robots.h"
 #include "absl/strings/string_view.h"
@@ -23,11 +24,11 @@ public:
   using gb::RobotsParseHandler::RobotsParseHandler;
 
   void HandleRobotsStart() override {
-    PYBIND11_OVERRIDE_PURE(void, gb::RobotsParseHandler, HandleRobotsStart);
+    PYBIND11_OVERRIDE_PURE(void, gb::RobotsParseHandler, HandleRobotsStart, );
   };
 
   void HandleRobotsEnd() override {
-    PYBIND11_OVERRIDE_PURE(void, gb::RobotsParseHandler, HandleRobotsEnd);
+    PYBIND11_OVERRIDE_PURE(void, gb::RobotsParseHandler, HandleRobotsEnd, );
   };
 
   void HandleUserAgent(int line_num, absl::string_view value) override {
@@ -195,11 +196,17 @@ typical typos found in robots.txt, such as 'disalow'.
 
 Note, this function will accept all kind of input but will skip
 everything that does not look like a robots directive.
+
+Wrapper Note (pyrobotstxt): Does not work with RobotsMatcher due to how it
+manages user agents and urls internally (requires initialising with
+protected method InitUserAgentsAndPath).
         )");
   
   py::class_<gb::RobotsMatcher> robotsMatcher(m,
                                               "RobotsMatcher",
-                                              py::dynamic_attr());
+                                              robotsParseHandler,
+                                              py::dynamic_attr(),
+                                              py::is_final());
 
   robotsMatcher.doc() = R"(
 RobotsMatcher - matches robots.txt against URLs.
