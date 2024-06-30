@@ -219,6 +219,7 @@
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">pyrobotstxt.googlebot.ParseRobotsTxt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyrobotstxt.googlebot.RobotsMatcher.html">pyrobotstxt.googlebot.RobotsMatcher</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyrobotstxt.googlebot.RobotsParseHandler.html">pyrobotstxt.googlebot.RobotsParseHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyrobotstxt.googlebot.VectorString.html">pyrobotstxt.googlebot.VectorString</a></li>
 </ul>
 </li>
 </ul>
@@ -274,9 +275,9 @@
 typical typos found in robots.txt, such as ‘disalow’.</p>
 <p>Note, this function will accept all kind of input but will skip
 everything that does not look like a robots directive.</p>
-<p>Wrapper Note (pyrobotstxt): Does not work with RobotsMatcher due to how it
-manages user agents and urls internally (requires initialising with
-protected method InitUserAgentsAndPath).</p>
+<p>Wrapper Note (pyrobotstxt): If using with RobotsMatcher make sure to call the
+InitUserAgentsAndPath first to initialise the internal user agents and path
+properties.</p>
 </dd></dl>
 
 </section>

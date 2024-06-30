@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="pyrobotstxt.googlebot" href="pyrobotstxt.googlebot.html" /><link rel="prev" title="API" href="../api.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="pyrobotstxt.googlebot.RobotsParseHandler" href="pyrobotstxt.googlebot.RobotsParseHandler.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>pyrobotstxt - pyrobotstxt documentation</title>
+        <title>pyrobotstxt.googlebot.VectorString - pyrobotstxt documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -191,7 +191,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -214,12 +214,12 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">pyrobotstxt</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of pyrobotstxt</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="pyrobotstxt.googlebot.html">pyrobotstxt.googlebot</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of pyrobotstxt.googlebot</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="pyrobotstxt.html">pyrobotstxt</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of pyrobotstxt</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="pyrobotstxt.googlebot.html">pyrobotstxt.googlebot</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of pyrobotstxt.googlebot</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="pyrobotstxt.googlebot.ParseRobotsTxt.html">pyrobotstxt.googlebot.ParseRobotsTxt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyrobotstxt.googlebot.RobotsMatcher.html">pyrobotstxt.googlebot.RobotsMatcher</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyrobotstxt.googlebot.RobotsParseHandler.html">pyrobotstxt.googlebot.RobotsParseHandler</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyrobotstxt.googlebot.VectorString.html">pyrobotstxt.googlebot.VectorString</a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">pyrobotstxt.googlebot.VectorString</a></li>
 </ul>
 </li>
 </ul>
@@ -246,7 +246,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/_autosummary/pyrobotstxt.rst.txt" title="View this page">
+  <a class="muted-link" href="../_sources/_autosummary/pyrobotstxt.googlebot.VectorString.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -260,25 +260,70 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-pyrobotstxt">
-<span id="pyrobotstxt"></span><h1>pyrobotstxt<a class="headerlink" href="#module-pyrobotstxt" title="Link to this heading">¶</a></h1>
-<p>Wrapped googlebot bindings for handling robots.txt files.</p>
-<p class="rubric">Modules</p>
-<div class="table-wrapper autosummary longtable docutils container">
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="pyrobotstxt.googlebot.html#module-pyrobotstxt.googlebot" title="pyrobotstxt.googlebot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyrobotstxt.googlebot</span></code></a></p></td>
-<td><p>This file implements the standard defined by the Robots Exclusion Protocol (REP) internet draft (I-D). <a class="reference external" href="https://www.rfc-editor.org/rfc/rfc9309.html">https://www.rfc-editor.org/rfc/rfc9309.html</a>.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+          <section id="pyrobotstxt-googlebot-vectorstring">
+<h1>pyrobotstxt.googlebot.VectorString<a class="headerlink" href="#pyrobotstxt-googlebot-vectorstring" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.VectorString">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrobotstxt.googlebot.</span></span><span class="sig-name descname"><span class="pre">VectorString</span></span><a class="headerlink" href="#pyrobotstxt.googlebot.VectorString" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.VectorString.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrobotstxt.googlebot.VectorString.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Copy constructor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.VectorString.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrobotstxt.googlebot.VectorString.append" title="Link to this definition">¶</a></dt>
+<dd><p>Add an item to the end of the list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.VectorString.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrobotstxt.googlebot.VectorString.clear" title="Link to this definition">¶</a></dt>
+<dd><p>Clear the contents</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.VectorString.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrobotstxt.googlebot.VectorString.count" title="Link to this definition">¶</a></dt>
+<dd><p>Return the number of times <code class="docutils literal notranslate"><span class="pre">x</span></code> appears in the list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.VectorString.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrobotstxt.googlebot.VectorString.extend" title="Link to this definition">¶</a></dt>
+<dd><p>Extend the list by appending all the items in the given list
+Extend the list by appending all the items in the given list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.VectorString.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrobotstxt.googlebot.VectorString.insert" title="Link to this definition">¶</a></dt>
+<dd><p>Insert an item at a given position.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.VectorString.pop">
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrobotstxt.googlebot.VectorString.pop" title="Link to this definition">¶</a></dt>
+<dd><p>Remove and return the last item
+Remove and return the item at index <code class="docutils literal notranslate"><span class="pre">i</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.VectorString.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrobotstxt.googlebot.VectorString.remove" title="Link to this definition">¶</a></dt>
+<dd><p>Remove the first item from the list whose value is x. It is an error if there is no such item.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
         </article>
@@ -286,23 +331,15 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="pyrobotstxt.googlebot.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">pyrobotstxt.googlebot</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="../api.html">
+          
+          <a class="prev-page" href="pyrobotstxt.googlebot.RobotsParseHandler.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">API</div>
+                <div class="title">pyrobotstxt.googlebot.RobotsParseHandler</div>
                 
               </div>
             </a>
@@ -324,8 +361,37 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">pyrobotstxt.googlebot.VectorString</a><ul>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.VectorString"><code class="docutils literal notranslate"><span class="pre">VectorString</span></code></a><ul>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.VectorString.__init__"><code class="docutils literal notranslate"><span class="pre">VectorString.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.VectorString.append"><code class="docutils literal notranslate"><span class="pre">VectorString.append()</span></code></a></li>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.VectorString.clear"><code class="docutils literal notranslate"><span class="pre">VectorString.clear()</span></code></a></li>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.VectorString.count"><code class="docutils literal notranslate"><span class="pre">VectorString.count()</span></code></a></li>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.VectorString.extend"><code class="docutils literal notranslate"><span class="pre">VectorString.extend()</span></code></a></li>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.VectorString.insert"><code class="docutils literal notranslate"><span class="pre">VectorString.insert()</span></code></a></li>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.VectorString.pop"><code class="docutils literal notranslate"><span class="pre">VectorString.pop()</span></code></a></li>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.VectorString.remove"><code class="docutils literal notranslate"><span class="pre">VectorString.remove()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

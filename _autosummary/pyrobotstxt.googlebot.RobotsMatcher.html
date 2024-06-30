@@ -219,6 +219,7 @@
 <li class="toctree-l4"><a class="reference internal" href="pyrobotstxt.googlebot.ParseRobotsTxt.html">pyrobotstxt.googlebot.ParseRobotsTxt</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">pyrobotstxt.googlebot.RobotsMatcher</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyrobotstxt.googlebot.RobotsParseHandler.html">pyrobotstxt.googlebot.RobotsParseHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyrobotstxt.googlebot.VectorString.html">pyrobotstxt.googlebot.VectorString</a></li>
 </ul>
 </li>
 </ul>
@@ -307,6 +308,14 @@ RFC3986.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.RobotsMatcher.ExtractUserAgent">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExtractUserAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pyrobotstxt.googlebot.RobotsMatcher.ExtractUserAgent" title="Link to this definition">¶</a></dt>
+<dd><p>Extract the matchable part of a user agent string, essentially stopping at
+the first invalid character.
+Example: ‘Googlebot/2.1’ becomes ‘Googlebot’</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyrobotstxt.googlebot.RobotsMatcher.HandleAllow">
 <span class="sig-name descname"><span class="pre">HandleAllow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyrobotstxt.googlebot.RobotsParseHandler.html#pyrobotstxt.googlebot.RobotsParseHandler" title="pyrobotstxt.googlebot.RobotsParseHandler"><span class="pre">pyrobotstxt.googlebot.RobotsParseHandler</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrobotstxt.googlebot.RobotsMatcher.HandleAllow" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -341,6 +350,13 @@ RFC3986.</p>
 <dt class="sig sig-object py" id="pyrobotstxt.googlebot.RobotsMatcher.HandleUserAgent">
 <span class="sig-name descname"><span class="pre">HandleUserAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyrobotstxt.googlebot.RobotsParseHandler.html#pyrobotstxt.googlebot.RobotsParseHandler" title="pyrobotstxt.googlebot.RobotsParseHandler"><span class="pre">pyrobotstxt.googlebot.RobotsParseHandler</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrobotstxt.googlebot.RobotsMatcher.HandleUserAgent" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.RobotsMatcher.InitUserAgentsAndPath">
+<span class="sig-name descname"><span class="pre">InitUserAgentsAndPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher" title="pyrobotstxt.googlebot.RobotsMatcher"><span class="pre">pyrobotstxt.googlebot.RobotsMatcher</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrobotstxt.googlebot.RobotsMatcher.InitUserAgentsAndPath" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize next path and user-agents to check. Path must contain only the
+path, params, and query (if any) of the url and must start with a ‘/’.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrobotstxt.googlebot.RobotsMatcher.IsValidUserAgentToObey">
@@ -387,6 +403,12 @@ referred explicitly to one of the specified user agents.</p>
 <dt class="sig sig-object py" id="pyrobotstxt.googlebot.RobotsMatcher.matching_line">
 <span class="sig-name descname"><span class="pre">matching_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher" title="pyrobotstxt.googlebot.RobotsMatcher"><span class="pre">pyrobotstxt.googlebot.RobotsMatcher</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyrobotstxt.googlebot.RobotsMatcher.matching_line" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the line that matched or 0 if none matched.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrobotstxt.googlebot.RobotsMatcher.seen_any_agent">
+<span class="sig-name descname"><span class="pre">seen_any_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher" title="pyrobotstxt.googlebot.RobotsMatcher"><span class="pre">pyrobotstxt.googlebot.RobotsMatcher</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pyrobotstxt.googlebot.RobotsMatcher.seen_any_agent" title="Link to this definition">¶</a></dt>
+<dd><p>Returns true if any user-agent was seen.</p>
 </dd></dl>
 
 </dd></dl>
@@ -452,6 +474,7 @@ referred explicitly to one of the specified user agents.</p>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher</span></code></a><ul>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.__init__"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.__init__()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.AllowedByRobots"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.AllowedByRobots()</span></code></a></li>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.ExtractUserAgent"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.ExtractUserAgent()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.HandleAllow"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.HandleAllow()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.HandleDisallow"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.HandleDisallow()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.HandleRobotsEnd"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.HandleRobotsEnd()</span></code></a></li>
@@ -459,6 +482,7 @@ referred explicitly to one of the specified user agents.</p>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.HandleSitemap"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.HandleSitemap()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.HandleUnknownAction"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.HandleUnknownAction()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.HandleUserAgent"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.HandleUserAgent()</span></code></a></li>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.InitUserAgentsAndPath"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.InitUserAgentsAndPath()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.IsValidUserAgentToObey"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.IsValidUserAgentToObey()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.OneAgentAllowedByRobots"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.OneAgentAllowedByRobots()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.ReportLineMetadata"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.ReportLineMetadata()</span></code></a></li>
@@ -466,6 +490,7 @@ referred explicitly to one of the specified user agents.</p>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.disallow_ignore_global"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.disallow_ignore_global()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.ever_seen_specific_agent"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.ever_seen_specific_agent()</span></code></a></li>
 <li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.matching_line"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.matching_line()</span></code></a></li>
+<li><a class="reference internal" href="#pyrobotstxt.googlebot.RobotsMatcher.seen_any_agent"><code class="docutils literal notranslate"><span class="pre">RobotsMatcher.seen_any_agent()</span></code></a></li>
 </ul>
 </li>
 </ul>
