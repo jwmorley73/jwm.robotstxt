@@ -1,5 +1,9 @@
+#include <string>
+#include <vector>
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/stl_bind.h>
 
 #include "robots.h"
 #include "absl/strings/string_view.h"
@@ -65,9 +69,20 @@ public:
   };
 };
 
+PYBIND11_MAKE_OPAQUE(std::vector<std::string, std::allocator<std::string>>);
+
+class PublicRobotsMatcher : public gb::RobotsMatcher {
+public:
+  using gb::RobotsMatcher::ExtractUserAgent;
+  using gb::RobotsMatcher::InitUserAgentsAndPath;
+  using gb::RobotsMatcher::seen_any_agent;
+};
+
 PYBIND11_MODULE(googlebot, m) {
   py::options options;
   options.disable_function_signatures();
+
+  py::bind_vector<std::vector<std::string, std::allocator<std::string>>>(m, "VectorString");
 
   m.doc() = R"(
 This file implements the standard defined by the Robots Exclusion Protocol
@@ -197,9 +212,9 @@ typical typos found in robots.txt, such as 'disalow'.
 Note, this function will accept all kind of input but will skip
 everything that does not look like a robots directive.
 
-Wrapper Note (pyrobotstxt): Does not work with RobotsMatcher due to how it
-manages user agents and urls internally (requires initialising with
-protected method InitUserAgentsAndPath).
+Wrapper Note (pyrobotstxt): If using with RobotsMatcher make sure to call the
+InitUserAgentsAndPath first to initialise the internal user agents and path
+properties.
         )");
   
   py::class_<gb::RobotsMatcher> robotsMatcher(m,
@@ -295,5 +310,29 @@ referred explicitly to one of the specified user agents.
 matching_line(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> int
 
 Returns the line that matched or 0 if none matched.
+         )")
+    .def_static("ExtractUserAgent",
+                &PublicRobotsMatcher::ExtractUserAgent,
+                R"(
+ExtractUserAgent(user_agent: str) -> str
+
+Extract the matchable part of a user agent string, essentially stopping at
+the first invalid character.
+Example: 'Googlebot/2.1' becomes 'Googlebot'
+                )")
+    .def("InitUserAgentsAndPath",
+         &PublicRobotsMatcher::InitUserAgentsAndPath,
+         R"(
+InitUserAgentsAndPath(self: pyrobotstxt.googlebot.RobotsMatcher, user_agents: typing.Sequence[str], path: str) -> None
+
+Initialize next path and user-agents to check. Path must contain only the
+path, params, and query (if any) of the url and must start with a '/'.
+         )")
+    .def("seen_any_agent",
+         &PublicRobotsMatcher::seen_any_agent,
+         R"(
+seen_any_agent(self: pyrobotstxt.googlebot.RobotsMatcher) -> bool
+
+Returns true if any user-agent was seen.
          )");
 };

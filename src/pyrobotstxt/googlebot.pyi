@@ -97,9 +97,9 @@ def ParseRobotsTxt(robots_body: str, parse_callback: RobotsParseHandler, /) -> N
     Note, this function will accept all kind of input but will skip
     everything that does not look like a robots directive.)
 
-    Wrapper Note (pyrobotstxt): Does not work with RobotsMatcher due to how it
-    manages user agents and urls internally (requires initialising with
-    protected method InitUserAgentsAndPath).
+    Wrapper Note (pyrobotstxt): If using with RobotsMatcher make sure to call the
+    InitUserAgentsAndPath first to initialise the internal user agents and path
+    properties.
     """
 
 class RobotsMatcher(RobotsParseHandler):
@@ -178,4 +178,25 @@ class RobotsMatcher(RobotsParseHandler):
     def matching_line(self, /) -> int:
         """
         Returns the line that matched or 0 if none matched.
+        """
+
+    @staticmethod
+    def ExtractUserAgent(user_agent: str) -> str:
+        """
+        Extract the matchable part of a user agent string, essentially stopping at
+        the first invalid character.
+        Example: 'Googlebot/2.1' becomes 'Googlebot'
+        """
+
+    def InitUserAgentsAndPath(
+        self, user_agents: typing.Sequence[str], path: str
+    ) -> None:
+        """
+        Initialize next path and user-agents to check. Path must contain only the
+        path, params, and query (if any) of the url and must start with a '/'.
+        """
+
+    def seen_any_agent(self) -> bool:
+        """
+        Returns true if any user-agent was seen.
         """

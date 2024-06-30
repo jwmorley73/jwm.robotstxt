@@ -48,6 +48,7 @@ def test_RobotsMatcher_AllowedByRobots(
     url: str,
     allowed: bool,
 ) -> None:
+    user_agents = pyrobotstxt.googlebot.VectorString(user_agents)
     assert robots_matcher.AllowedByRobots(robotstxt, user_agents, url) == allowed
 
 
@@ -66,3 +67,38 @@ def test_RobotsMatcher_OneAgentAllowedByRobots(
     allowed: bool,
 ) -> None:
     assert robots_matcher.OneAgentAllowedByRobots(robotstxt, user_agent, url) == allowed
+
+
+@pytest.mark.parametrize(
+    ("user_agents", "path"),
+    (
+        (("GoodBot",), "/"),
+        (("GoodBot", "BadBot"), "/path?query"),
+    ),
+)
+def test_RobotsMatcher_InitUserAgentsAndPath(
+    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    user_agents: typing.Sequence[str],
+    path: str,
+) -> None:
+    user_agents = pyrobotstxt.googlebot.VectorString(user_agents)
+    robots_matcher.InitUserAgentsAndPath(user_agents, path)
+
+@pytest.mark.parametrize(
+    ("robotstxt", "user_agents", "path", "disallowed"),
+    (
+        (robotstxt, ["GoodBot",], "/path", False),
+        (robotstxt, ["BadBot",], "/path", False),
+    )
+)
+def test_RobotsMatcher_disallow(
+    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robotstxt: str,
+    user_agents: typing.Sequence[str],
+    path: str,
+    disallowed: str
+) -> None:
+    user_agents = pyrobotstxt.googlebot.VectorString(user_agents)
+    robots_matcher.InitUserAgentsAndPath(user_agents, path)
+    pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
+    assert robots_matcher.disallow() == disallowed
