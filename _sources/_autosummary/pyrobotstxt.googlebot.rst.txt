@@ -28,7 +28,6 @@ pyrobotstxt.googlebot
    
       RobotsMatcher
       RobotsParseHandler
-      VectorString
    
    
 
