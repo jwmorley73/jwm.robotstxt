@@ -12,6 +12,10 @@ import pytest
 import pyrobotstxt.googlebot
 
 robotstxt = """
+user-agent: *
+allowed: /path
+disallow: /other
+
 user-agent: GoodBot
 allowed: /path
 
@@ -82,20 +86,180 @@ def test_RobotsMatcher_InitUserAgentsAndPath(
 ) -> None:
     robots_matcher.InitUserAgentsAndPath(user_agents, path)
 
+
 @pytest.mark.parametrize(
     ("robotstxt", "user_agents", "path", "disallowed"),
     (
-        (robotstxt, ["GoodBot",], "/path", False),
-        (robotstxt, ["BadBot",], "/path", True),
-    )
+        (
+            robotstxt,
+            ("GoodBot",),
+            "/path",
+            False,
+        ),
+        (
+            robotstxt,
+            ("BadBot",),
+            "/path",
+            True,
+        ),
+        (
+            robotstxt,
+            ("AnotherBot",),
+            "/other",
+            True,
+        ),
+    ),
 )
 def test_RobotsMatcher_disallow(
     robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
     robotstxt: str,
     user_agents: typing.Sequence[str],
     path: str,
-    disallowed: str
+    disallowed: bool,
 ) -> None:
     robots_matcher.InitUserAgentsAndPath(user_agents, path)
     pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
     assert robots_matcher.disallow() == disallowed
+
+
+@pytest.mark.parametrize(
+    ("robotstxt", "user_agents", "path", "disallowed"),
+    (
+        (
+            robotstxt,
+            ("GoodBot",),
+            "/path",
+            False,
+        ),
+        (
+            robotstxt,
+            ("BadBot",),
+            "/path",
+            True,
+        ),
+        (
+            robotstxt,
+            ("AnotherBot",),
+            "/other",
+            False,
+        ),
+    ),
+)
+def test_RobotsMatcher_disallow_ignore_global(
+    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robotstxt: str,
+    user_agents: typing.Sequence[str],
+    path: str,
+    disallowed: bool,
+) -> None:
+    robots_matcher.InitUserAgentsAndPath(user_agents, path)
+    pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
+    assert robots_matcher.disallow_ignore_global() == disallowed
+
+
+@pytest.mark.parametrize(
+    ("robotstxt", "user_agents", "path", "disallowed"),
+    (
+        (
+            robotstxt,
+            ("GoodBot",),
+            "/",
+            True,
+        ),
+        (
+            robotstxt,
+            ("BadBot",),
+            "/",
+            True,
+        ),
+        (
+            robotstxt,
+            ("AnotherBot",),
+            "/",
+            False,
+        ),
+    ),
+)
+def test_RobotsMatcher_ever_seen_specific_agent(
+    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robotstxt: str,
+    user_agents: typing.Sequence[str],
+    path: str,
+    disallowed: bool,
+) -> None:
+    robots_matcher.InitUserAgentsAndPath(user_agents, path)
+    pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
+    assert robots_matcher.ever_seen_specific_agent() == disallowed
+
+
+@pytest.mark.parametrize(
+    ("robotstxt", "user_agents", "path", "line"),
+    (
+        (
+            robotstxt,
+            ("GoodBot",),
+            "/path",
+            7,
+        ),
+        (
+            robotstxt,
+            ("BadBot",),
+            "/path",
+            10,
+        ),
+        (
+            robotstxt,
+            ("AnotherBot",),
+            "/path",
+            3,
+        ),
+    ),
+)
+def test_RobotsMatcher_matching_line(
+    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robotstxt: str,
+    user_agents: typing.Sequence[str],
+    path: str,
+    line: int,
+) -> None:
+    robots_matcher.InitUserAgentsAndPath(user_agents, path)
+    pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
+    assert robots_matcher.matching_line() == line
+
+
+@pytest.mark.parametrize(
+    ("string", "user_agent"),
+    (
+        ("GoodBot", "GoodBot"),
+        ("GoodBot/2", "GoodBot"),
+    ),
+)
+def test_RobotsMatcher_ExtractUserAgent(
+    string: str,
+    user_agent: str,
+) -> None:
+    assert pyrobotstxt.googlebot.RobotsMatcher.ExtractUserAgent(string) == user_agent
+
+
+@pytest.mark.parametrize(
+    ("robotstxt", "user_agents", "path", "seen"),
+    (
+        (robotstxt, ("GoodBot", "BadBot"), "/path", True),
+        (
+            robotstxt,
+            ("AnotherBot",),
+            "/path",
+            False,
+        ),
+    ),
+)
+def test_RobotsMatcher_seen_any_agent(
+    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robotstxt: str,
+    user_agents: typing.Sequence[str],
+    path: str,
+    seen: bool,
+) -> None:
+    robots_matcher.InitUserAgentsAndPath(user_agents, path)
+    pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
+    assert robots_matcher.seen_any_agent() == seen

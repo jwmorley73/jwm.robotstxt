@@ -24,5 +24,5 @@ doc:
 test:
 	$(python) -m pytest
 
-lint:
+format:
 	$(python) -m isort --profile=black ./setup.py ./src ./tests && $(python) -m black ./setup.py ./src ./tests
