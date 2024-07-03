@@ -93,8 +93,6 @@ PYBIND11_MODULE(googlebot, m) {
   py::options options;
   options.disable_function_signatures();
 
-  py::bind_vector<std::vector<std::string, std::allocator<std::string>>>(m, "VectorString");
-
   m.doc() = R"(
 This file implements the standard defined by the Robots Exclusion Protocol
 (REP) internet draft (I-D).
