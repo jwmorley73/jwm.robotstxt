@@ -22,6 +22,7 @@ dev = [
     "pyrobotstxt[doc, test]",
     "isort",
     "black",
+    "clang-format",
     "setuptools",
     "cmake",
     "pybind11"

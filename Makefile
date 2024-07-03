@@ -24,5 +24,7 @@ doc:
 test:
 	$(python) -m pytest
 
-format:
-	$(python) -m isort --profile=black ./setup.py ./src ./tests && $(python) -m black ./setup.py ./src ./tests
+format: |
+	$(python) -m isort --profile=black ./setup.py ./src ./tests
+	$(python) -m black ./setup.py ./src ./tests
+	find ./src -iname '*.cc' | xargs $(dir $(python))clang-format --style=Google -i
