@@ -48,7 +48,6 @@ def test_RobotsMatcher_AllowedByRobots(
     url: str,
     allowed: bool,
 ) -> None:
-    user_agents = pyrobotstxt.googlebot.VectorString(user_agents)
     assert robots_matcher.AllowedByRobots(robotstxt, user_agents, url) == allowed
 
 
@@ -81,14 +80,13 @@ def test_RobotsMatcher_InitUserAgentsAndPath(
     user_agents: typing.Sequence[str],
     path: str,
 ) -> None:
-    user_agents = pyrobotstxt.googlebot.VectorString(user_agents)
     robots_matcher.InitUserAgentsAndPath(user_agents, path)
 
 @pytest.mark.parametrize(
     ("robotstxt", "user_agents", "path", "disallowed"),
     (
         (robotstxt, ["GoodBot",], "/path", False),
-        (robotstxt, ["BadBot",], "/path", False),
+        (robotstxt, ["BadBot",], "/path", True),
     )
 )
 def test_RobotsMatcher_disallow(
@@ -98,7 +96,6 @@ def test_RobotsMatcher_disallow(
     path: str,
     disallowed: str
 ) -> None:
-    user_agents = pyrobotstxt.googlebot.VectorString(user_agents)
     robots_matcher.InitUserAgentsAndPath(user_agents, path)
     pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
     assert robots_matcher.disallow() == disallowed

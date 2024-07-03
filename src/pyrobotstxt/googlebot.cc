@@ -69,13 +69,24 @@ public:
   };
 };
 
-PYBIND11_MAKE_OPAQUE(std::vector<std::string, std::allocator<std::string>>);
-
-class PublicRobotsMatcher : public gb::RobotsMatcher {
+class PublicStatefulRobotsMatcher : public gb::RobotsMatcher {
 public:
+  PublicStatefulRobotsMatcher() = default;
+  ~PublicStatefulRobotsMatcher()  = default;
+
   using gb::RobotsMatcher::ExtractUserAgent;
-  using gb::RobotsMatcher::InitUserAgentsAndPath;
   using gb::RobotsMatcher::seen_any_agent;
+
+  void InitUserAgentsAndPath(const std::vector<std::string>& user_agents,
+                             const std::string& path) {
+    this->user_agents = std::make_unique<std::vector<std::string>>(user_agents);
+    this->path = std::make_unique<std::string>(path);
+    return gb::RobotsMatcher::InitUserAgentsAndPath(this->user_agents.get(), this->path->c_str());
+  };
+
+private:
+  std::unique_ptr<std::vector<std::string>> user_agents;
+  std::unique_ptr<std::string> path;
 };
 
 PYBIND11_MODULE(googlebot, m) {
@@ -217,7 +228,7 @@ InitUserAgentsAndPath first to initialise the internal user agents and path
 properties.
         )");
   
-  py::class_<gb::RobotsMatcher> robotsMatcher(m,
+  py::class_<PublicStatefulRobotsMatcher> robotsMatcher(m,
                                               "RobotsMatcher",
                                               robotsParseHandler,
                                               py::dynamic_attr(),
@@ -255,7 +266,7 @@ every URI except /cgi-bin. However, according to the expired internet
 standard, crawlers should be allowed to crawl everything with such a rule.
       )")
     .def_static("IsValidUserAgentToObey",
-                &gb::RobotsMatcher::IsValidUserAgentToObey,
+                &PublicStatefulRobotsMatcher::IsValidUserAgentToObey,
                 R"(
 IsValidUserAgentToObey(user_agent: str, /) -> bool
 
@@ -264,7 +275,7 @@ robots.txt. Valid user agent strings only contain the characters
 [a-zA-Z_-].
                 )")
     .def("AllowedByRobots",
-         &gb::RobotsMatcher::AllowedByRobots,
+         &PublicStatefulRobotsMatcher::AllowedByRobots,
          R"(
 AllowedByRobots(self: pyrobotstxt.googlebot.RobotsMatcher, robots_body: str, user_agents: typing.Sequence[str], url: str, /) -> bool
 
@@ -273,7 +284,7 @@ the "user_agents" vector. 'url' must be %-encoded according to
 RFC3986.
          )")
     .def("OneAgentAllowedByRobots",
-         &gb::RobotsMatcher::OneAgentAllowedByRobots,
+         &PublicStatefulRobotsMatcher::OneAgentAllowedByRobots,
          R"(
 OneAgentAllowedByRobots(self: pyrobotstxt.googlebot.RobotsMatcher, robots_txt: str, user_agent: str, url: str, /) -> bool
 
@@ -281,14 +292,14 @@ Do robots check for 'url' when there is only one user agent. 'url' must
 be %-encoded according to RFC3986.
          )")
     .def("disallow",
-         &gb::RobotsMatcher::disallow,
+         &PublicStatefulRobotsMatcher::disallow,
          R"(
 disallow(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> bool
 
 Returns true if we are disallowed from crawling a matching URI.
          )")
     .def("disallow_ignore_global",
-         &gb::RobotsMatcher::disallow_ignore_global,
+         &PublicStatefulRobotsMatcher::disallow_ignore_global,
          R"(
 disallow_ignore_global(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> bool
 
@@ -297,7 +308,7 @@ rules specified for the default user agent, and bases its results only on
 the specified user agents.
          )")
     .def("ever_seen_specific_agent",
-         &gb::RobotsMatcher::ever_seen_specific_agent,
+         &PublicStatefulRobotsMatcher::ever_seen_specific_agent,
          R"(
 ever_seen_specific_agent(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> bool
 
@@ -305,14 +316,14 @@ Returns true iff, when AllowedByRobots() was called, the robots file
 referred explicitly to one of the specified user agents.
          )")
     .def("matching_line",
-         &gb::RobotsMatcher::matching_line,
+         &PublicStatefulRobotsMatcher::matching_line,
          R"(
 matching_line(self: pyrobotstxt.googlebot.RobotsMatcher, /) -> int
 
 Returns the line that matched or 0 if none matched.
          )")
     .def_static("ExtractUserAgent",
-                &PublicRobotsMatcher::ExtractUserAgent,
+                &PublicStatefulRobotsMatcher::ExtractUserAgent,
                 R"(
 ExtractUserAgent(user_agent: str) -> str
 
@@ -321,7 +332,7 @@ the first invalid character.
 Example: 'Googlebot/2.1' becomes 'Googlebot'
                 )")
     .def("InitUserAgentsAndPath",
-         &PublicRobotsMatcher::InitUserAgentsAndPath,
+         &PublicStatefulRobotsMatcher::InitUserAgentsAndPath,
          R"(
 InitUserAgentsAndPath(self: pyrobotstxt.googlebot.RobotsMatcher, user_agents: typing.Sequence[str], path: str) -> None
 
@@ -329,7 +340,7 @@ Initialize next path and user-agents to check. Path must contain only the
 path, params, and query (if any) of the url and must start with a '/'.
          )")
     .def("seen_any_agent",
-         &PublicRobotsMatcher::seen_any_agent,
+         &PublicStatefulRobotsMatcher::seen_any_agent,
          R"(
 seen_any_agent(self: pyrobotstxt.googlebot.RobotsMatcher) -> bool
 
