@@ -25,19 +25,20 @@ def remove_dynamic_libraries(directory: os.PathLike) -> None:
 
     match platform.system():
         case "Linux":
-            extension = ".so"
+            extensions = (".so",)
         case "Darwin":
-            extension = ".dylib"
+            extensions = (".dylib",)
         case "Windows":
-            extension = ".dll"
+            extensions = (".dll", ".lib")
         case _:
             raise Exception("Could not determine your systems platform")
 
     for path in directory.iterdir():
         if path.is_dir():
             continue
-        if extension in path.suffixes:
-            path.unlink()
+        for suffix in path.suffixes:
+            if suffix in extensions:
+                path.unlink()
 
 
 def main() -> None:
