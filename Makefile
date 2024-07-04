@@ -22,7 +22,7 @@ doc:
 	cd ./docs && make html
 
 test:
-	$(python) -m pytest
+	$(python) -m coverage run -m pytest ./tests
 
 format: |
 	$(python) -m isort --profile=black ./setup.py ./src ./tests

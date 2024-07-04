@@ -15,14 +15,19 @@ doc = [
 ]
 
 test = [
+    "coverage",
     "pytest"
 ]
 
-dev = [
-    "pyrobotstxt[doc, test]",
+format = [
     "isort",
     "black",
-    "clang-format",
+    "clang-format"
+]
+
+dev = [
+    "pyrobotstxt[doc, test, format]",
+    "cibuildwheel",
     "setuptools",
     "cmake",
     "pybind11"
@@ -33,3 +38,7 @@ minversion = 6.0
 console_output_style = "count"
 addopts = ["--import-mode=importlib"]
 testpaths = ["tests"]
+
+[tool.cibuildwheel]
+test-extras = ["test"]
+test-command = "python -m coverage run -m pytest {package}/tests"
