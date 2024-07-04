@@ -1,0 +1,28 @@
+name: "Release: Build and Deploy"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    stratergy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+    steps:
+      - name: Checkout pyrobotstxt
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+
+      - name: Build Wheels
+        uses: pypa/cibuildwheel@2.19.2
+
+      - name: Upload Wheel Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
