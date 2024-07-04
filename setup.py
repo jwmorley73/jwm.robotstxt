@@ -1,5 +1,6 @@
 import os
 import pathlib
+import platform
 import subprocess
 
 import pybind11.setup_helpers
@@ -13,26 +14,49 @@ def build_robotstxt(
     src = pathlib.Path(src).resolve()
     out = pathlib.Path(out).resolve()
 
-    subprocess.check_call(("cmake", "-S", str(src), "-B", str(out)))
+    subprocess.check_call(
+        ("cmake", "-S", str(src), "-B", str(out), "-DROBOTS_INSTALL=OFF")
+    )
     subprocess.check_call(("cmake", "--build", str(out)))
+
+
+def remove_dynamic_libraries(directory: os.PathLike) -> None:
+    directory = pathlib.Path(directory).resolve()
+
+    match platform.system():
+        case "Linux":
+            extension = ".so"
+        case "Darwin":
+            extension = ".dylib"
+        case "Windows":
+            extension = ".dll"
+        case _:
+            raise Exception("Could not determine your systems platform")
+
+    for dynamic_library in directory.glob(f"*{extension}"):
+        dynamic_library.unlink()
 
 
 def main() -> None:
     # Build robotstxt
     robotstxt_src = pathlib.Path.cwd() / "robotstxt"
+    robotstxt_build = pathlib.Path.cwd() / "c-build"
     if not robotstxt_src.exists():
         raise Exception(f"Could not find robotstxt source in {str(robotstxt_src)}")
-    robotstxt_build = pathlib.Path.cwd() / "c-build"
+    if not any(robotstxt_src.iterdir()):
+        raise Exception(
+            """
+The robotstxt directory is empty. Make sure you have pulled all the submodules as well.
+
+    git submodules init
+    git submodules update
+
+            """
+        )
     build_robotstxt(robotstxt_src, robotstxt_build)
 
-    # Remove the dynamic library to force a static link
-    dynamic_robots_library = robotstxt_build / "librobots.so"
-    dynamic_robots_library.unlink()
-
-    # Find the required 3rd party absl headers fetched by robotstxts build
-    abseil_src = next(robotstxt_build.rglob("abseil-cpp-src/"), None)
-    if abseil_src is None:
-        raise Exception("Could not find absl src in robotstxt build")
+    # Remove the dynamic libraries to force a static link
+    remove_dynamic_libraries(robotstxt_build)
 
     setuptools.setup(
         ext_modules=[
@@ -40,8 +64,11 @@ def main() -> None:
                 "pyrobotstxt.googlebot",
                 ["./src/pyrobotstxt/googlebot.cc"],
                 # Include robotstxt and abseil headers
-                include_dirs=[str(robotstxt_src), str(abseil_src)],
-                # Include robotstxt and relevant absl libraries
+                include_dirs=[
+                    str(robotstxt_src),
+                    str(robotstxt_build / "libs/abseil-cpp-src/"),
+                ],
+                # Include robotstxt and relevant abseil libraries
                 libraries=[
                     "robots",
                     "absl_strings",
