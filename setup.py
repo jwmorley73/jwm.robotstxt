@@ -33,8 +33,11 @@ def remove_dynamic_libraries(directory: os.PathLike) -> None:
         case _:
             raise Exception("Could not determine your systems platform")
 
-    for dynamic_library in directory.glob(f"*{extension}"):
-        dynamic_library.unlink()
+    for path in directory.iterdir():
+        if path.is_dir():
+            continue
+        if extension in path.suffixes:
+            path.unlink()
 
 
 def main() -> None:
@@ -45,13 +48,10 @@ def main() -> None:
         raise Exception(f"Could not find robotstxt source in {str(robotstxt_src)}")
     if not any(robotstxt_src.iterdir()):
         raise Exception(
-            """
-The robotstxt directory is empty. Make sure you have pulled all the submodules as well.
-
-    git submodules init
-    git submodules update
-
-            """
+            "The robotstxt directory is empty. "
+            "Make sure you have pulled all the submodules as well.\n"
+            "\tgit submodules init\n"
+            "\tgit submodules update"
         )
     build_robotstxt(robotstxt_src, robotstxt_build)
 
