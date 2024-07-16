@@ -29,7 +29,7 @@ def remove_dynamic_libraries(directory: os.PathLike) -> None:
         case "Darwin":
             extensions = (".dylib",)
         case "Windows":
-            extensions = (".dll")
+            extensions = (".dll",)
         case _:
             raise Exception("Could not determine your systems platform")
 
