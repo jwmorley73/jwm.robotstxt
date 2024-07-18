@@ -13,7 +13,7 @@ install:
 	$(python) -m pip install .
 
 clean:
-	rm -rf ./build ./c-build ./dist || 0
+	rm -rf ./build ./c-build ./dist ./lib ./wheelhouse || 0
 
 uninstall:
 	$(python) -m pip uninstall -y $(project)

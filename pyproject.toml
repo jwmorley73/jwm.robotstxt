@@ -42,3 +42,6 @@ testpaths = ["tests"]
 [tool.cibuildwheel]
 test-extras = ["test"]
 test-command = "python -m coverage run -m pytest {package}/tests"
+# Skip 32 bit platforms for now. Will need to find a way of building
+# robotstxt on 32 bit platforms.
+skip = ["cp310-win32", "cp311-win32", "cp312-win32", "cp313-win32"]

@@ -1,86 +1,100 @@
 import os
 import pathlib
 import platform
+import shutil
 import subprocess
+import typing
 
 import pybind11.setup_helpers
 import setuptools
 
 
-def build_robotstxt(
+def cmake_build(
     src: os.PathLike,
     out: os.PathLike,
+    *,
+    make_args: typing.Tuple = (),
+    build_args: typing.Tuple = (),
 ) -> None:
     src = pathlib.Path(src).resolve()
     out = pathlib.Path(out).resolve()
 
-    subprocess.check_call(
-        ("cmake", "-S", str(src), "-B", str(out), "-DROBOTS_INSTALL=OFF")
-    )
-    subprocess.check_call(("cmake", "--build", str(out)))
+    subprocess.check_call(("cmake", "-S", str(src), "-B", str(out), *make_args))
+    subprocess.check_call(("cmake", "--build", str(out), *build_args))
 
 
-def remove_dynamic_libraries(directory: os.PathLike) -> None:
-    directory = pathlib.Path(directory).resolve()
+def collect_static_libraries(
+    libraries: typing.Iterable[str],
+    build_directory: os.PathLike,
+    lib_directory: os.PathLike,
+) -> None:
+    build_directory = pathlib.Path(build_directory).resolve()
+    lib_directory = pathlib.Path(lib_directory).resolve()
+    lib_directory.mkdir(exist_ok=True)
 
-    match platform.system():
-        case "Linux":
-            extensions = (".so",)
-        case "Darwin":
-            extensions = (".dylib",)
-        case "Windows":
-            extensions = (".dll",)
-        case _:
-            raise Exception("Could not determine your systems platform")
+    platform_static_library_suffixes = (".a",)
+    if platform.system() == "Windows":
+        platform_static_library_suffixes = (".lib",)
 
-    for path in directory.iterdir():
-        if path.is_dir():
+    for path in build_directory.rglob("*"):
+        if path.suffix not in platform_static_library_suffixes:
             continue
-        for suffix in path.suffixes:
-            if suffix in extensions:
-                path.unlink()
+        if path.stem in libraries:
+            shutil.copy(path, lib_directory)
 
 
 def main() -> None:
-    # Build robotstxt
-    robotstxt_src = pathlib.Path.cwd() / "robotstxt"
-    robotstxt_build = pathlib.Path.cwd() / "c-build"
-    if not robotstxt_src.exists():
-        raise Exception(f"Could not find robotstxt source in {str(robotstxt_src)}")
-    if not any(robotstxt_src.iterdir()):
-        raise Exception(
+    # Config
+    src_dir = pathlib.Path.cwd() / "robotstxt"
+    build_dir = pathlib.Path.cwd() / "c-build"
+    lib_dir = pathlib.Path.cwd() / "lib"
+
+    package_name = "pyrobotstxt.googlebot"
+    extension_sources = ["./src/pyrobotstxt/googlebot.cc"]
+    header_dirs = [
+        str(src_dir),
+        str(build_dir / "libs/abseil-cpp-src/"),
+    ]
+    libs = [
+        "robots",
+        "absl_string_view",
+        "absl_strings",
+        "absl_throw_delegate",
+    ]
+
+    # Check config
+    if not src_dir.exists():
+        raise FileNotFoundError(f"Could not find robotstxt source in {str(src_dir)}")
+    if not any(src_dir.iterdir()):
+        raise FileNotFoundError(
             "The robotstxt directory is empty. "
             "Make sure you have pulled all the submodules as well.\n"
             "\tgit submodules init\n"
             "\tgit submodules update"
         )
-    build_robotstxt(robotstxt_src, robotstxt_build)
 
-    # Remove the dynamic libraries to force a static link
-    remove_dynamic_libraries(robotstxt_build)
+    # Build and extract libs
+    cmake_build(
+        src_dir,
+        build_dir,
+        make_args=(
+            "-DROBOTS_INSTALL=OFF",
+        ),
+        build_args=(
+            "--config",
+            "Release",
+        )
+    )
+    collect_static_libraries(libs, build_dir, lib_dir)
 
     setuptools.setup(
         ext_modules=[
             pybind11.setup_helpers.Pybind11Extension(
-                "pyrobotstxt.googlebot",
-                ["./src/pyrobotstxt/googlebot.cc"],
-                # Include robotstxt and abseil headers
-                include_dirs=[
-                    str(robotstxt_src),
-                    str(robotstxt_build / "libs/abseil-cpp-src/"),
-                ],
-                # Include robotstxt and relevant abseil libraries
-                libraries=[
-                    "robots",
-                    "absl_strings",
-                    "absl_string_view",
-                    "absl_throw_delegate",
-                ],
-                library_dirs=[
-                    str(robotstxt_build),
-                    str(robotstxt_build / "libs/abseil-cpp-build/absl/strings"),
-                    str(robotstxt_build / "libs/abseil-cpp-build/absl/base"),
-                ],
+                name=package_name,
+                sources=extension_sources,
+                include_dirs=header_dirs,
+                libraries=libs,
+                library_dirs=[str(lib_dir)],
                 # Match the robotstxt c++ version.
                 #
                 # There is a breaking change 14->17 for the dependant absl
