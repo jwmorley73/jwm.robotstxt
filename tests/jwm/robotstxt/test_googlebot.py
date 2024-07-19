@@ -239,9 +239,7 @@ def test_RobotsMatcher_ExtractUserAgent(
     string: str,
     user_agent: str,
 ) -> None:
-    assert (
-        jwm.robotstxt.googlebot.RobotsMatcher.ExtractUserAgent(string) == user_agent
-    )
+    assert jwm.robotstxt.googlebot.RobotsMatcher.ExtractUserAgent(string) == user_agent
 
 
 @pytest.mark.parametrize(

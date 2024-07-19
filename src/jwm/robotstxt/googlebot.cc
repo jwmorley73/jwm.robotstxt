@@ -90,9 +90,6 @@ class PublicStatefulRobotsMatcher : public gb::RobotsMatcher {
 };
 
 PYBIND11_MODULE(googlebot, m) {
-  py::options options;
-  options.disable_function_signatures();
-
   m.doc() = R"(
 This file implements the standard defined by the Robots Exclusion Protocol
 (REP) internet draft (I-D).
@@ -118,39 +115,20 @@ Handler for directives found in robots.txt. These callbacks are called by
 ParseRobotsTxt() in the sequence they have been found in the file.
   )";
 
-  robotsParseHandler
-      .def(py::init<>(),
-           R"(
-__init__(self: jwm.robotstxt.googlebot.RobotsParseHandler, /) -> None
-                         )")
-      .def("HandleRobotsStart", &gb::RobotsParseHandler::HandleRobotsStart,
-           R"(
-HandleRobotsStart(self: jwm.robotstxt.googlebot.RobotsParseHandler, /) -> None
-         )")
-      .def("HandleRobotsEnd", &gb::RobotsParseHandler::HandleRobotsEnd,
-           R"(
-HandleRobotsEnd(self: jwm.robotstxt.googlebot.RobotsParseHandler, /) -> None
-         )")
+  robotsParseHandler.def(py::init<>())
+      .def("HandleRobotsStart", &gb::RobotsParseHandler::HandleRobotsStart)
+      .def("HandleRobotsEnd", &gb::RobotsParseHandler::HandleRobotsEnd)
       .def("HandleUserAgent", &gb::RobotsParseHandler::HandleUserAgent,
-           R"(
-HandleUserAgent(self: jwm.robotstxt.googlebot.RobotsParseHandler, line_num: int, value: str, /) -> None
-         )")
+           py::arg("line_num"), py::arg("value"))
       .def("HandleAllow", &gb::RobotsParseHandler::HandleAllow,
-           R"(
-HandleAllow(self: jwm.robotstxt.googlebot.RobotsParseHandler, line_num: int, value: str, /) -> None
-         )")
+           py::arg("line_num"), py::arg("value"))
       .def("HandleDisallow", &gb::RobotsParseHandler::HandleDisallow,
-           R"(
-HandleDisallow(self: jwm.robotstxt.googlebot.RobotsParseHandler, line_num: int, value: str, /) -> None
-         )")
+           py::arg("line_num"), py::arg("value"))
       .def("HandleSitemap", &gb::RobotsParseHandler::HandleSitemap,
-           R"(
-HandleSitemap(self: jwm.robotstxt.googlebot.RobotsParseHandler, line_num: int, value: str, /) -> None
-         )")
+           py::arg("line_num"), py::arg("value"))
       .def("HandleUnknownAction", &gb::RobotsParseHandler::HandleUnknownAction,
+           py::arg("line_num"), py::arg("action"), py::arg("value"),
            R"(
-HandleUnknownAction(self: jwm.robotstxt.googlebot.RobotsParseHandler, line_num: int, action: str, value: str, /) -> None
-
 Any other unrecognized name/value pairs.
          )");
 
@@ -198,14 +176,11 @@ Indicates that the key-value pair is missing the colon separator.
 
   robotsParseHandler.def("ReportLineMetadata",
                          &gb::RobotsParseHandler::ReportLineMetadata,
-                         R"(
-ReportLineMetadata(self: jwm.robotstxt.googlebot.RobotsParseHandler, line_num: int, metadata: jwm.robotstxt.googlebot.RobotsParseHandler.LineMetadata, /) -> None
-         )");
+                         py::arg("line_num"), py::arg("metadata"));
 
-  m.def("ParseRobotsTxt", &gb::ParseRobotsTxt,
+  m.def("ParseRobotsTxt", &gb::ParseRobotsTxt, py::arg("robots_body"),
+        py::arg("parse_callback").none(false),
         R"(
-ParseRobotsTxt(robots_body: str, parse_callback: jwm.robotstxt.googlebot.RobotsParseHandler, /) -> None
-
 Parses body of a robots.txt and emits parse callbacks. This will accept
 typical typos found in robots.txt, such as 'disalow'.
 
@@ -237,8 +212,6 @@ The RobotsMatcher can be re-used for URLs/robots.txt but is not thread-safe.
   robotsMatcher
       .def(py::init<>(),
            R"(
-__init__(self: jwm.robotstxt.googlebot.RobotsMatcher, /) -> None
-
 Create a RobotsMatcher with the default matching strategy. The default
 matching strategy is longest-match as opposed to the former internet draft
 that provisioned first-match strategy. Analysis shows that longest-match,
@@ -254,40 +227,34 @@ standard, crawlers should be allowed to crawl everything with such a rule.
       )")
       .def_static("IsValidUserAgentToObey",
                   &PublicStatefulRobotsMatcher::IsValidUserAgentToObey,
+                  py::arg("user_agent"),
                   R"(
-IsValidUserAgentToObey(user_agent: str, /) -> bool
-
 Verifies that the given user agent is valid to be matched against
 robots.txt. Valid user agent strings only contain the characters
 [a-zA-Z_-].
                 )")
       .def("AllowedByRobots", &PublicStatefulRobotsMatcher::AllowedByRobots,
+           py::arg("robots_body"), py::arg("user_agents").none(false),
+           py::arg("url"),
            R"(
-AllowedByRobots(self: jwm.robotstxt.googlebot.RobotsMatcher, robots_body: str, user_agents: typing.Sequence[str], url: str, /) -> bool
-
 Returns true iff 'url' is allowed to be fetched by any member of
 the "user_agents" vector. 'url' must be %-encoded according to
 RFC3986.
          )")
       .def("OneAgentAllowedByRobots",
            &PublicStatefulRobotsMatcher::OneAgentAllowedByRobots,
+           py::arg("robots_txt"), py::arg("user_agent"), py::arg("url"),
            R"(
-OneAgentAllowedByRobots(self: jwm.robotstxt.googlebot.RobotsMatcher, robots_txt: str, user_agent: str, url: str, /) -> bool
-
 Do robots check for 'url' when there is only one user agent. 'url' must
 be %-encoded according to RFC3986.
          )")
       .def("disallow", &PublicStatefulRobotsMatcher::disallow,
            R"(
-disallow(self: jwm.robotstxt.googlebot.RobotsMatcher, /) -> bool
-
 Returns true if we are disallowed from crawling a matching URI.
          )")
       .def("disallow_ignore_global",
            &PublicStatefulRobotsMatcher::disallow_ignore_global,
            R"(
-disallow_ignore_global(self: jwm.robotstxt.googlebot.RobotsMatcher, /) -> bool
-
 Returns true if we are disallowed from crawling a matching URI. Ignores any
 rules specified for the default user agent, and bases its results only on
 the specified user agents.
@@ -295,38 +262,30 @@ the specified user agents.
       .def("ever_seen_specific_agent",
            &PublicStatefulRobotsMatcher::ever_seen_specific_agent,
            R"(
-ever_seen_specific_agent(self: jwm.robotstxt.googlebot.RobotsMatcher, /) -> bool
-
 Returns true iff, when AllowedByRobots() was called, the robots file
 referred explicitly to one of the specified user agents.
          )")
       .def("matching_line", &PublicStatefulRobotsMatcher::matching_line,
            R"(
-matching_line(self: jwm.robotstxt.googlebot.RobotsMatcher, /) -> int
-
 Returns the line that matched or 0 if none matched.
          )")
       .def_static("ExtractUserAgent",
                   &PublicStatefulRobotsMatcher::ExtractUserAgent,
+                  py::arg("user_agent"),
                   R"(
-ExtractUserAgent(user_agent: str) -> str
-
 Extract the matchable part of a user agent string, essentially stopping at
 the first invalid character.
 Example: 'Googlebot/2.1' becomes 'Googlebot'
                 )")
       .def("InitUserAgentsAndPath",
            &PublicStatefulRobotsMatcher::InitUserAgentsAndPath,
+           py::arg("user_agents").none(false), py::arg("path").none(false),
            R"(
-InitUserAgentsAndPath(self: jwm.robotstxt.googlebot.RobotsMatcher, user_agents: typing.Sequence[str], path: str) -> None
-
 Initialize next path and user-agents to check. Path must contain only the
 path, params, and query (if any) of the url and must start with a '/'.
          )")
       .def("seen_any_agent", &PublicStatefulRobotsMatcher::seen_any_agent,
            R"(
-seen_any_agent(self: jwm.robotstxt.googlebot.RobotsMatcher) -> bool
-
 Returns true if any user-agent was seen.
          )");
 };
