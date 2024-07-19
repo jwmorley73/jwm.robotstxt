@@ -1,7 +1,7 @@
-pyrobotstxt.googlebot.RobotsMatcher
-===================================
+jwm.robotstxt.googlebot.RobotsMatcher
+=====================================
 
-.. currentmodule:: pyrobotstxt.googlebot
+.. currentmodule:: jwm.robotstxt.googlebot
 
 .. autoclass:: RobotsMatcher
    :members:

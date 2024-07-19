@@ -1,7 +1,7 @@
-pyrobotstxt.googlebot.RobotsParseHandler
-========================================
+jwm.robotstxt.googlebot.RobotsParseHandler
+==========================================
 
-.. currentmodule:: pyrobotstxt.googlebot
+.. currentmodule:: jwm.robotstxt.googlebot
 
 .. autoclass:: RobotsParseHandler
    :members:

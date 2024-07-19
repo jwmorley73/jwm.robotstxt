@@ -1,6 +1,0 @@
-pyrobotstxt.googlebot.ParseRobotsTxt
-====================================
-
-.. currentmodule:: pyrobotstxt.googlebot
-
-.. autofunction:: ParseRobotsTxt

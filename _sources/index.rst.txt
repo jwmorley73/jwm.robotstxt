@@ -1,5 +1,5 @@
-Welcome to pyrobotstxt's documentation!
-=======================================
+Welcome to jwm.robotstxt's documentation!
+=========================================
 
 .. toctree::
    :maxdepth: 2

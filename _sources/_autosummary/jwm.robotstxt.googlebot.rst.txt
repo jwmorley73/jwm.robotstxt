@@ -1,7 +1,7 @@
-pyrobotstxt.googlebot
-=====================
+jwm.robotstxt.googlebot
+=======================
 
-.. automodule:: pyrobotstxt.googlebot
+.. automodule:: jwm.robotstxt.googlebot
 
    
    

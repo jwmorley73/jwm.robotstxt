@@ -1,0 +1,6 @@
+jwm.robotstxt.googlebot.ParseRobotsTxt
+======================================
+
+.. currentmodule:: jwm.robotstxt.googlebot
+
+.. autofunction:: ParseRobotsTxt
