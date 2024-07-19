@@ -10,37 +10,37 @@ import setuptools
 
 
 def cmake_build(
-    src: os.PathLike,
-    out: os.PathLike,
+    src_dir: os.PathLike,
+    out_dir: os.PathLike,
     *,
     make_args: typing.Tuple = (),
     build_args: typing.Tuple = (),
 ) -> None:
-    src = pathlib.Path(src).resolve()
-    out = pathlib.Path(out).resolve()
+    src_dir = pathlib.Path(src_dir).resolve()
+    out_dir = pathlib.Path(out_dir).resolve()
 
-    subprocess.check_call(("cmake", "-S", str(src), "-B", str(out), *make_args))
-    subprocess.check_call(("cmake", "--build", str(out), *build_args))
+    subprocess.check_call(("cmake", "-S", str(src_dir), "-B", str(out_dir), *make_args))
+    subprocess.check_call(("cmake", "--build", str(out_dir), *build_args))
 
 
 def collect_static_libraries(
-    libraries: typing.Iterable[str],
-    build_directory: os.PathLike,
-    lib_directory: os.PathLike,
+    libs: typing.Iterable[str],
+    build_dir: os.PathLike,
+    lib_dir: os.PathLike,
 ) -> None:
-    build_directory = pathlib.Path(build_directory).resolve()
-    lib_directory = pathlib.Path(lib_directory).resolve()
-    lib_directory.mkdir(exist_ok=True)
+    build_dir = pathlib.Path(build_dir).resolve()
+    lib_dir = pathlib.Path(lib_dir).resolve()
+    lib_dir.mkdir(exist_ok=True)
 
-    platform_static_library_suffixes = (".a",)
+    prefix = "lib"
+    suffix = ".a"
     if platform.system() == "Windows":
-        platform_static_library_suffixes = (".lib",)
+        prefix = ""
+        suffix = ".lib"
 
-    for path in build_directory.rglob("*"):
-        if path.suffix not in platform_static_library_suffixes:
-            continue
-        if path.stem in libraries:
-            shutil.copy(path, lib_directory)
+    for path in build_dir.rglob(f"{prefix}*{suffix}"):
+        if path.name[len(prefix):-len(suffix)] in libs:
+            shutil.copy(path, lib_dir)
 
 
 def main() -> None:
