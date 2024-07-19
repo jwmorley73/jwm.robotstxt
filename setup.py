@@ -39,7 +39,7 @@ def collect_static_libraries(
         suffix = ".lib"
 
     for path in build_dir.rglob(f"{prefix}*{suffix}"):
-        if path.name[len(prefix):-len(suffix)] in libs:
+        if path.name[len(prefix) : -len(suffix)] in libs:
             shutil.copy(path, lib_dir)
 
 
@@ -49,8 +49,8 @@ def main() -> None:
     build_dir = pathlib.Path.cwd() / "c-build"
     lib_dir = pathlib.Path.cwd() / "lib"
 
-    package_name = "pyrobotstxt.googlebot"
-    extension_sources = ["./src/pyrobotstxt/googlebot.cc"]
+    package_name = "jwm.robotstxt.googlebot"
+    extension_sources = ["./src/jwm/robotstxt/googlebot.cc"]
     header_dirs = [
         str(src_dir),
         str(build_dir / "libs/abseil-cpp-src/"),
@@ -77,13 +77,11 @@ def main() -> None:
     cmake_build(
         src_dir,
         build_dir,
-        make_args=(
-            "-DROBOTS_INSTALL=OFF",
-        ),
+        make_args=("-DROBOTS_INSTALL=OFF",),
         build_args=(
             "--config",
             "Release",
-        )
+        ),
     )
     collect_static_libraries(libs, build_dir, lib_dir)
 

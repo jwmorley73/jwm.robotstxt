@@ -9,7 +9,7 @@ import typing
 
 import pytest
 
-import pyrobotstxt.googlebot
+import jwm.robotstxt.googlebot
 
 robotstxt = """
 user-agent: *
@@ -25,8 +25,8 @@ disallow: /path
 
 
 @pytest.fixture
-def robots_matcher() -> pyrobotstxt.googlebot.RobotsMatcher:
-    return pyrobotstxt.googlebot.RobotsMatcher()
+def robots_matcher() -> jwm.robotstxt.googlebot.RobotsMatcher:
+    return jwm.robotstxt.googlebot.RobotsMatcher()
 
 
 @pytest.mark.parametrize(
@@ -34,7 +34,8 @@ def robots_matcher() -> pyrobotstxt.googlebot.RobotsMatcher:
 )
 def test_RobotsMatcher_IsValidUserAgentToObey(user_agent: str, valid: bool) -> None:
     assert (
-        pyrobotstxt.googlebot.RobotsMatcher.IsValidUserAgentToObey(user_agent) == valid
+        jwm.robotstxt.googlebot.RobotsMatcher.IsValidUserAgentToObey(user_agent)
+        == valid
     )
 
 
@@ -46,7 +47,7 @@ def test_RobotsMatcher_IsValidUserAgentToObey(user_agent: str, valid: bool) -> N
     ),
 )
 def test_RobotsMatcher_AllowedByRobots(
-    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robots_matcher: jwm.robotstxt.googlebot.RobotsMatcher,
     robotstxt: str,
     user_agents: typing.Sequence[str],
     url: str,
@@ -63,7 +64,7 @@ def test_RobotsMatcher_AllowedByRobots(
     ),
 )
 def test_RobotsMatcher_OneAgentAllowedByRobots(
-    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robots_matcher: jwm.robotstxt.googlebot.RobotsMatcher,
     robotstxt: str,
     user_agent: str,
     url: str,
@@ -80,7 +81,7 @@ def test_RobotsMatcher_OneAgentAllowedByRobots(
     ),
 )
 def test_RobotsMatcher_InitUserAgentsAndPath(
-    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robots_matcher: jwm.robotstxt.googlebot.RobotsMatcher,
     user_agents: typing.Sequence[str],
     path: str,
 ) -> None:
@@ -111,14 +112,14 @@ def test_RobotsMatcher_InitUserAgentsAndPath(
     ),
 )
 def test_RobotsMatcher_disallow(
-    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robots_matcher: jwm.robotstxt.googlebot.RobotsMatcher,
     robotstxt: str,
     user_agents: typing.Sequence[str],
     path: str,
     disallowed: bool,
 ) -> None:
     robots_matcher.InitUserAgentsAndPath(user_agents, path)
-    pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
+    jwm.robotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
     assert robots_matcher.disallow() == disallowed
 
 
@@ -146,14 +147,14 @@ def test_RobotsMatcher_disallow(
     ),
 )
 def test_RobotsMatcher_disallow_ignore_global(
-    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robots_matcher: jwm.robotstxt.googlebot.RobotsMatcher,
     robotstxt: str,
     user_agents: typing.Sequence[str],
     path: str,
     disallowed: bool,
 ) -> None:
     robots_matcher.InitUserAgentsAndPath(user_agents, path)
-    pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
+    jwm.robotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
     assert robots_matcher.disallow_ignore_global() == disallowed
 
 
@@ -181,14 +182,14 @@ def test_RobotsMatcher_disallow_ignore_global(
     ),
 )
 def test_RobotsMatcher_ever_seen_specific_agent(
-    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robots_matcher: jwm.robotstxt.googlebot.RobotsMatcher,
     robotstxt: str,
     user_agents: typing.Sequence[str],
     path: str,
     disallowed: bool,
 ) -> None:
     robots_matcher.InitUserAgentsAndPath(user_agents, path)
-    pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
+    jwm.robotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
     assert robots_matcher.ever_seen_specific_agent() == disallowed
 
 
@@ -216,14 +217,14 @@ def test_RobotsMatcher_ever_seen_specific_agent(
     ),
 )
 def test_RobotsMatcher_matching_line(
-    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robots_matcher: jwm.robotstxt.googlebot.RobotsMatcher,
     robotstxt: str,
     user_agents: typing.Sequence[str],
     path: str,
     line: int,
 ) -> None:
     robots_matcher.InitUserAgentsAndPath(user_agents, path)
-    pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
+    jwm.robotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
     assert robots_matcher.matching_line() == line
 
 
@@ -238,7 +239,9 @@ def test_RobotsMatcher_ExtractUserAgent(
     string: str,
     user_agent: str,
 ) -> None:
-    assert pyrobotstxt.googlebot.RobotsMatcher.ExtractUserAgent(string) == user_agent
+    assert (
+        jwm.robotstxt.googlebot.RobotsMatcher.ExtractUserAgent(string) == user_agent
+    )
 
 
 @pytest.mark.parametrize(
@@ -254,12 +257,12 @@ def test_RobotsMatcher_ExtractUserAgent(
     ),
 )
 def test_RobotsMatcher_seen_any_agent(
-    robots_matcher: pyrobotstxt.googlebot.RobotsMatcher,
+    robots_matcher: jwm.robotstxt.googlebot.RobotsMatcher,
     robotstxt: str,
     user_agents: typing.Sequence[str],
     path: str,
     seen: bool,
 ) -> None:
     robots_matcher.InitUserAgentsAndPath(user_agents, path)
-    pyrobotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
+    jwm.robotstxt.googlebot.ParseRobotsTxt(robotstxt, robots_matcher)
     assert robots_matcher.seen_any_agent() == seen

@@ -6,5 +6,5 @@ API
     :template: api-module.rst
     :recursive:
 
-    pyrobotstxt
+    jwm.robotstxt
 

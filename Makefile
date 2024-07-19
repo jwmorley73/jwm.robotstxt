@@ -2,7 +2,7 @@
 
 venv=./.venv
 python=$(venv)/bin/python
-project=pyrobotstxt
+project=jwm.robotstxt
 
 default: uninstall clean install
 

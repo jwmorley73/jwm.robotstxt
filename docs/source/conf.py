@@ -10,7 +10,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "pyrobotstxt"
+project = "jwm.robotstxt"
 copyright = "2024, jwmorley"
 author = "jwmorley"
 

@@ -10,7 +10,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout pyrobotstxt
+      - name: Checkout jwm.robotstxt
         uses: actions/checkout@v4
         with:
           submodules: "true"
@@ -23,10 +23,10 @@ jobs:
       - name: Create Virtual Environment
         run: python3.10 -m venv ./.venv
       
-      - name: Build and Install pyrobotstxt[doc] into Virtual Environment
+      - name: Build and Install jwm.robotstxt[doc] into Virtual Environment
         run: python3.10 -m pip install .[doc]
 
-      - name: Build HTML Documentation for pyrobotstxt
+      - name: Build HTML Documentation for jwm.robotstxt
         run: . ./.venv/bin/activate && cd ./docs && make html
 
       - name: Upload Documentation Artifacts

@@ -97,7 +97,7 @@ def ParseRobotsTxt(robots_body: str, parse_callback: RobotsParseHandler, /) -> N
     Note, this function will accept all kind of input but will skip
     everything that does not look like a robots directive.)
 
-    Wrapper Note (pyrobotstxt): If using with RobotsMatcher make sure to call the
+    Wrapper Note (jwm.robotstxt): If using with RobotsMatcher make sure to call the
     InitUserAgentsAndPath first to initialise the internal user agents and path
     properties.
     """
