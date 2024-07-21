@@ -1,4 +1,4 @@
-name: "Release: Build and Deploy"
+name: "Release: Build, Test and Deploy"
 
 on:
   push:
@@ -18,10 +18,10 @@ jobs:
         with:
           submodules: "true"
 
-      - name: Build Wheels
+      - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.2
 
-      - name: Upload Wheel Artifacts
+      - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
@@ -39,12 +39,14 @@ jobs:
       - name: Build sdist
         run: pipx run build --sdist
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload sdist
+        uses: actions/upload-artifact@v4
         with:
           name: cibw-sdist
           path: dist/*.tar.gz
 
   publish_test_pypi:
+    name: Publish to TestPyPI
     needs: 
       - build_wheels
       - build_sdist
@@ -55,17 +57,20 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download sdist and wheels
+        uses: actions/download-artifact@v4
         with:
           pattern: cibw-*
           path: dist
           merge-multiple: true
 
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Publish to TestPyPi
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
 
   publish_pypi:
+    name: Publish to PyPi
     needs: 
       - build_wheels
       - build_sdist
@@ -76,15 +81,18 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download sdist and wheels
+        uses: actions/download-artifact@v4
         with:
           pattern: cibw-*
           path: dist
           merge-multiple: true
 
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Publish to PyPi
+        uses: pypa/gh-action-pypi-publish@release/v1
   
   github_release:
+    name: Create Github release
     needs:
       - publish_pypi
     runs-on: ubuntu-latest
@@ -92,7 +100,8 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download sdist and wheels
+        uses: actions/download-artifact@v4
         with:
           pattern: cibw-*
           path: dist
@@ -121,3 +130,54 @@ jobs:
           gh release upload
           '${{ github.ref_name }}' dist/**
           --repo '${{ github.repository }}'
+
+  build_documentation:
+    name: Build Documentation
+    needs: 
+      - publish_pypi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout jwm.robotstxt
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+
+      - name: Install Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+        
+      - name: Create Virtual Environment
+        run: python3.10 -m venv ./.venv
+      
+      - name: Install jwm.robotstxt[doc] into Virtual Environment
+        run: python3.10 -m pip install jwm.robotstxt[doc]
+
+      - name: Build HTML Documentation
+        run: . ./.venv/bin/activate && cd ./docs && make html
+
+      - name: Upload Documentation Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-docs
+          path: ./docs/build/html/
+
+  deploy_documentation:
+    name: Deploy Documentation
+    needs: 
+      - build_documentation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Documentation Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: html-docs
+          path: ./docs/build/html
+
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/html
