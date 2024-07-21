@@ -69,8 +69,7 @@ def main() -> None:
         raise FileNotFoundError(
             "The robotstxt directory is empty. "
             "Make sure you have pulled all the submodules as well.\n"
-            "\tgit submodules init\n"
-            "\tgit submodules update"
+            "\tgit submodules update --init --recursive"
         )
 
     # Build and extract libs
