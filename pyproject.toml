@@ -4,7 +4,22 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jwm.robotstxt"
-version = "1.0.2"
+version = "1.0.3"
+description = "Provides python access to Googles parser for robot.txt files as used by their GoogleBot webscraper."
+readme = "README.md"
+authors = [{ name = "Joel Morley", email = "jwmorley73@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+keywords = ["robotstxt", "wrapper", "google", "parser"]
 requires-python = ">=3.10"
 dependencies = []
 
@@ -32,6 +47,10 @@ dev = [
     "cmake",
     "pybind11"
 ]
+
+[project.urls]
+Homepage = "https://github.com/jwmorley73/jwm.robotstxt"
+Documentation = "https://jwmorley73.github.io/jwm.robotstxt/"
 
 [tool.pytest.ini_options]
 minversion = 6.0
