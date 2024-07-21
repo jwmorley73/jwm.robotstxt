@@ -25,7 +25,7 @@ matcher = jwm.robotstxt.googlebot.RobotsMatcher()
 assert matcher.AllowedByRobots(robotstxt, ("GoodBot",), "/path")
 ```
 
-Check out the [documentation](https://jwmorley73.github.io/jwm.robotstxt/) for further details. For more use cases, see the test cases for [jwm.robotstxt](/tests/jwm/robotstxt/test_googlebot.py) and [robotstxt]("https://github.com/google/robotstxt/blob/a732377373e8bbee9f720b52020e2a8d5dd19cf8/robots_test.cc").
+Check out the [documentation](https://jwmorley73.github.io/jwm.robotstxt/) for further details. For more use cases, see the test cases for [jwm.robotstxt](/tests/jwm/robotstxt/test_googlebot.py) and [robotstxt](https://github.com/google/robotstxt/blob/a732377373e8bbee9f720b52020e2a8d5dd19cf8/robots_test.cc).
 
 ## Installation
 
