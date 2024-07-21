@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jwm.robotstxt"
-version = "1.0.6"
+version = "1.0.7"
 description = "Provides python access to Googles parser for robot.txt files as used by their GoogleBot webscraper."
 readme = "README.md"
 authors = [{ name = "Joel Morley", email = "jwmorley73@gmail.com" }]
@@ -54,8 +54,8 @@ Documentation = "https://jwmorley73.github.io/jwm.robotstxt/"
 
 [tool.setuptools.data-files]
 robotstxt = ["robotstxt/*"]
-tests = ["tests/*"]
-docs = ["docs/*"]
+tests = ["tests/**/*.*"]
+docs = ["docs/**/*.*"]
 
 [tool.pytest.ini_options]
 minversion = 6.0
