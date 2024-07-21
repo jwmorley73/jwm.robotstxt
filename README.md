@@ -1,3 +1,5 @@
+![main](https://github.com/jwmorley/jwm.robotstxt/actions/workflows/release.yml/badge.svg?branch=main)
+
 # jwm.robotstxt
 
 ## Python Wrapper for Googles Robotstxt Parser
