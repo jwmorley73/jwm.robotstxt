@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jwm.robotstxt"
-version = "1.0.4"
+version = "1.0.5"
 description = "Provides python access to Googles parser for robot.txt files as used by their GoogleBot webscraper."
 readme = "README.md"
 authors = [{ name = "Joel Morley", email = "jwmorley73@gmail.com" }]
