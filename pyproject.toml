@@ -52,6 +52,11 @@ dev = [
 Homepage = "https://github.com/jwmorley73/jwm.robotstxt"
 Documentation = "https://jwmorley73.github.io/jwm.robotstxt/"
 
+[tool.setuptools.data-files]
+robotstxt = ["robotstxt/*"]
+tests = ["tests/*"]
+docs = ["docs/*"]
+
 [tool.pytest.ini_options]
 minversion = 6.0
 console_output_style = "count"
