@@ -88,7 +88,7 @@ jobs:
   github_release:
     if: startsWith(github.ref, 'refs/tags/')
     needs:
-      - publish-pypi
+      - publish_pypi
     runs-on: ubuntu-latest
     permissions:
       contents: write
