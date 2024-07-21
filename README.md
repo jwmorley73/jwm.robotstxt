@@ -31,8 +31,6 @@ Check out the [documentation](https://jwmorley73.github.io/jwm.robotstxt/) for f
 
 ## Installation
 
-//Todo: Setup pipeline into Pypi. These steps are for the expected workflow
-
 Install from Pypi under the `jwm.robotstxt` distribution.
 
 ```shell
