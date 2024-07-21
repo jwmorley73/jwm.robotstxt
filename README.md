@@ -1,4 +1,4 @@
-[![build status](https://github.com/jwmorley/jwm.robotstxt/actions/workflows/release.yaml/badge.svg)](https://github.com/jwmorley/jwm.robotstxt/actions/workflows/release.yaml)
+[![build status](https://github.com/jwmorley73/jwm.robotstxt/actions/workflows/release.yaml/badge.svg)](https://github.com/jwmorley73/jwm.robotstxt/actions/workflows/release.yaml)
 
 # jwm.robotstxt
 
