@@ -1,4 +1,5 @@
-[![build status]([https://github.com/asottile/git-code-debt/actions/workflows/main.yml/badge.svg](https://github.com/jwmorley/jwm.robotstxt/actions/workflows/release.yml/badge.svg))]([https://github.com/asottile/git-code-debt/actions/workflows/main.yml](https://github.com/jwmorley/jwm.robotstxt/actions/workflows/release.yml))
+[![build status](https://github.com/jwmorley/jwm.robotstxt/actions/workflows/release.yaml/badge.svg)](https://github.com/jwmorley/jwm.robotstxt/actions/workflows/release.yaml)
+
 # jwm.robotstxt
 
 ## Python Wrapper for Googles Robotstxt Parser
