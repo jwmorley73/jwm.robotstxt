@@ -1,7 +1,7 @@
 .PHONY: build install clean uninstall doc test lint
 
 venv=./.venv
-python=$(venv)/bin/python
+python=$(venv)/Scripts/python
 project=jwm.robotstxt
 
 default: uninstall clean install
