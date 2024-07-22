@@ -53,9 +53,11 @@ Homepage = "https://github.com/jwmorley73/jwm.robotstxt"
 Documentation = "https://jwmorley73.github.io/jwm.robotstxt/"
 
 [tool.setuptools.data-files]
-robotstxt = ["robotstxt/*"]
-tests = ["tests/**/*.*"]
-docs = ["docs/**/*.*"]
+# Glob matching directories breaks the build. For our case,
+# files have a suffix or start with a capitol letter.
+robotstxt = ["robotstxt/**/*.*", "robotstxt/**/[A-Z]*"]
+tests = ["tests/**/*.*", "tests/**/[A-Z]*"]
+docs = ["docs/**/*.*", "docs/**/[A-Z]*"]
 
 [tool.pytest.ini_options]
 minversion = 6.0
